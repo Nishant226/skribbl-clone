@@ -21,23 +21,19 @@ A feature-rich, real-time multiplayer drawing and guessing (pictionary) game ins
 - **Frontend:** React, Vite, HTML5 Canvas API
 - **Backend:** Node.js, Express, Socket.IO
 - **Deployment:** Render (Monorepo setup)
-
+  
 ## ⚙️ Local Setup & Installation
 
 1. Clone the repository:
    ```bash
-   git clone (https://github.com/Nishant226/skribbl-clone.git)
+   git clone https://github.com/Nishant226/skribbl-clone.git
    cd skribbl-clone
-
-# Install dependencies for backend and frontend:
+2.Install backend and frontend dependencies: 
    ```bash
- # Install backend dependencies
-cd backend
-npm install
-
-# Install frontend dependencies
-cd ../frontend
-npm install
-
- # Run the application locally:
- node backend/server.js
+   cd backend
+   npm install
+   cd ../frontend
+   npm install
+```
+3.Run the application locally:
+  node backend/server.js

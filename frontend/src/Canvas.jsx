@@ -156,14 +156,14 @@ function Canvas({ roomId, isDrawer }) {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       
-      {/* Canvas Element with matching style dimensions to prevent blur */}
+      {/* Canvas Element with Pointer Events for seamless mobile touch & desktop mouse support */}
       <div className="relative rounded-xl overflow-hidden shadow-lg border border-slate-700 bg-white">
         <canvas
           ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
+          onPointerDown={startDrawing}
+          onPointerMove={draw}
+          onPointerUp={stopDrawing}
+          onPointerLeave={stopDrawing}
           style={{ width: '600px', height: '360px', touchAction: 'none' }}
           className={`block ${isDrawer ? 'cursor-crosshair' : 'cursor-not-allowed'}`}
         />

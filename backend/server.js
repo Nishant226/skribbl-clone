@@ -143,6 +143,15 @@ class MessageHandler {
             currentDrawer.roundScore += drawerBonus;
           }
 
+          // Check if all non-drawer active players have now guessed the word!
+          const nonDrawerPlayers = activePlayers.filter(p => p.id !== currentDrawer?.id);
+          const allGuessed = nonDrawerPlayers.length > 0 && nonDrawerPlayers.every(p => room.guessedPlayers.has(p.id));
+
+          if (allGuessed) {
+            // Stop timers immediately and end round early
+            room.endRoundEarly();
+          }
+
           return { 
             status: 'correct', 
             correct: true,
@@ -216,7 +225,6 @@ class Room {
 
     let isSpectator = forceSpectator;
     
-    // If the room is full or the game has already started, make the user an automatic spectator
     if (isRoomFull || this.gameState !== 'lobby') {
       isSpectator = true;
     }
@@ -299,6 +307,15 @@ class Room {
     }, drawTimeSec * 1000);
   }
 
+  endRoundEarly() {
+    io.to(this.roomId).emit('chat_message', { 
+      playerId: 'system', 
+      playerName: 'System', 
+      text: `🚀 Everyone has guessed the word! Ending round early.` 
+    });
+    this.endRound();
+  }
+
   endRound() {
     if (this.timer) clearTimeout(this.timer);
     if (this.hintTimer) clearTimeout(this.hintTimer);
@@ -345,7 +362,6 @@ io.on('connection', (socket) => {
   socket.on('get_public_rooms', () => {
     const publicRooms = [];
     for (let [roomId, room] of rooms.entries()) {
-      // Public rooms that are either in the lobby or running (playing)
       if (room.settings.roomType === 'public' && room.gameState !== 'game_over') {
         const activeCount = room.players.filter(p => !p.isSpectator).length;
         publicRooms.push({
@@ -365,7 +381,6 @@ io.on('connection', (socket) => {
     for (let [roomId, room] of rooms.entries()) {
       if (room.settings && room.settings.roomType === 'public' && room.gameState !== 'game_over') {
         const activeCount = room.players.filter(p => !p.isSpectator).length;
-        // First check lobby rooms that have space available
         if (room.gameState === 'lobby' && activeCount < (room.settings.maxPlayers || 8)) {
           availableRoom = room;
           break;
@@ -515,7 +530,6 @@ io.on('connection', (socket) => {
       return socket.emit('error_message', { message: 'At least 2 active players are required to start the game!' });
     }
 
-    // Check if all non-host active players are ready
     const nonHostPlayers = activePlayers.filter(p => !p.isHost);
     const unreadyPlayers = nonHostPlayers.filter(p => !p.isReady);
     if (unreadyPlayers.length > 0) {
@@ -633,7 +647,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// --- REACT FRONTEND STATIC SERVING FOR PRODUCTION ---
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
