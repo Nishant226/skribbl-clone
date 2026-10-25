@@ -26,10 +26,10 @@ A feature-rich, real-time multiplayer drawing and guessing (pictionary) game ins
 
 1. Clone the repository:
    ```bash
-   git clone (https://github.com/Nishant226/skribbl-clone.git)
+  git clone [https://github.com/Nishant226/skribbl-clone.git](https://github.com/Nishant226/skribbl-clone.git)
    cd skribbl-clone
 
-# Install dependencies for backend and frontend:
+2. Install dependencies for backend and frontend:
    ```bash
  # Install backend dependencies
 cd backend
