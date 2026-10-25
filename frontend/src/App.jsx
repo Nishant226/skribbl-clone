@@ -311,11 +311,6 @@ function App() {
               ))}
             </div>
           </div>
-
-          <div className="flex items-center justify-center gap-2.5 bg-slate-950/40 py-2.5 rounded-xl border border-slate-800/50">
-            <input type="checkbox" id="spectatorCheck" checked={joinAsSpectator} onChange={(e) => setJoinAsSpectator(e.target.checked)} className="w-4 h-4 accent-purple-500 rounded cursor-pointer" />
-            <label htmlFor="spectatorCheck" className="text-sm text-slate-300 font-medium cursor-pointer select-none">Join as Spectator 👁️</label>
-          </div>
           
           <div className="grid grid-cols-2 gap-3">
             <button onClick={handleQuickPlay} className="py-3 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold rounded-xl shadow-lg transition active:scale-95 text-sm">⚡ Quick Play</button>
